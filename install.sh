@@ -18,11 +18,12 @@ function install_deps {
 }
 
 function apt_install_deps {
-  apt-get update && apt-get install -y git
+  apt-get update && apt-get install -y git awscli
 }
 
 function apk_install_deps {
-  apk add --no-cache git
+  apk add --no-cache git python py-pip
+  pip install awscli
 }
 
 function install {
