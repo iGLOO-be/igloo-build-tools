@@ -14,11 +14,11 @@ install_deps () {
 }
 
 apt_install_deps () {
-  apt-get update && apt-get install -y git awscli
+  apt-get update && apt-get install -y git awscli gettext
 }
 
 apk_install_deps () {
-  apk add --no-cache git python py-pip
+  apk add --no-cache git python py-pip gettext
   pip install awscli
 }
 
