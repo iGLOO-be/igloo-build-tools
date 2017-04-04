@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -e
+
+. ci-setup-k8s
+
+docker push $RELEASE_IMAGE_TAG_PATH
+docker push $RELEASE_IMAGE_LATEST_PATH

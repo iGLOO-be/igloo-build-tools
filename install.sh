@@ -6,10 +6,6 @@ TMPDIR="/tmp/igloo-build-tools"
 INSTALL_DIR="/usr/local/bin"
 
 function install_deps {
-  if hash git 2>/dev/null; then
-    return 0
-  fi
-
   if hash apk 2>/dev/null; then
     apk_install_deps
   else

@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+set -e
+
+. ci-setup-k8s
+
+docker build \
+  --cache-from $RELEASE_IMAGE_LATEST_PATH \
+  --build-arg GIT_SHA=$CI_BUILD_REF \
+  -t $RELEASE_IMAGE_TAG_PATH .
+docker tag \
+  $RELEASE_IMAGE_TAG_PATH \
+  $RELEASE_IMAGE_LATEST_PATH
+docker images

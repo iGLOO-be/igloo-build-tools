@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+set -e
+
+kubectl-install
+
+# Env variables:
+# - KUBE_SERVER
+# - KUBE_USERNAME
+# - KUBE_PASSWORD
+KUBE_NAMESPACE=$SCOPE_NAME
+KUBE_IMAGE=$RELEASE_IMAGE_TAG_PATH
+
+# Login to cluster
+if [ -z "$KUBE_SERVER" ] && [ -z "$KUBE_USERNAME" ] && [ -z "$KUBE_PASSWORD" ]; then
+  kubectl config set-cluster cluster \
+    --server $KUBE_SERVER
+  kubectl config set-credentials user \
+    --username=$KUBE_USERNAME \
+    --password=$KUBE_PASSWORD
+  kubectl config set-context default-system --cluster=cluster --user=user
+  kubectl config use-context default-system
+fi
+
+# Create namespace and set in context
+kubectl create namespace $KUBE_NAMESPACE || true
+kubectl config set-context default-system --namespace=$KUBE_NAMESPACE
