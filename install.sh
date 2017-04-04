@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 REPOSITORY="git://github.com/igloo-be/igloo-build-tools.git"
+VERSION="v0.0.0"
 TMPDIR="/tmp/igloo-build-tools"
 INSTALL_DIR="/usr/local/bin"
 
@@ -27,6 +28,8 @@ function apk_install_deps {
 function install {
   mkdir -p $TMPDIR
   git clone $REPOSITORY $TMPDIR
+  cd $TMPDIR
+  git checkout $VERSION
   cp $TMPDIR/bin/* /usr/local/bin
 }
 
