@@ -2,7 +2,7 @@
 
 set -e
 
-kubectl-install
+. kubectl-install
 
 # Env variables:
 # - KUBE_SERVER

@@ -9,14 +9,11 @@ export SCOPE_NAME=$( echo $CI_PROJECT_NAMESPACE-$CI_PROJECT_NAME | tr '[:upper:]
 export IMAGE_TAG=$CI_PIPELINE_ID
 tag=""
 if [ "$CI_COMMIT_TAG" != "" ]; then
-  echo "foo"
   tag=$CI_COMMIT_TAG
 elif [ "$CI_BUILD_TAG" != "" ]; then
-  echo "foo2"
   # Since gitlab@9
   tag=$CI_BUILD_TAG
 elif [ "$CI_PIPELINE_ID" != "" ]; then
-  echo "foo3"
   echo "Warning: missing CI_BUILD_TAG env variable!"
   echo "Fallback to pipeline id: $CI_PIPELINE_ID"
   tag=$CI_PIPELINE_ID
@@ -25,7 +22,6 @@ else
   echo "Are you running on GitLab CI ?"
   exit 1
 fi
-echo "tag: $tag"
 export RELASE_IMAGE_TAG=$tag
 
 # Base image like 123.dkr.ecr.eu-west-1.amazonaws.com/igloo/igloo-devops-gitlab-ci-kubernetes
