@@ -12,7 +12,7 @@ KUBE_NAMESPACE=$SCOPE_NAME
 KUBE_IMAGE=$RELEASE_IMAGE_TAG_PATH
 
 # Login to cluster
-if [ -z "$KUBE_SERVER" ] && [ -z "$KUBE_USERNAME" ] && [ -z "$KUBE_PASSWORD" ]; then
+if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD" != "" ]; then
   kubectl config set-cluster cluster \
     --server $KUBE_SERVER
   kubectl config set-credentials user \
