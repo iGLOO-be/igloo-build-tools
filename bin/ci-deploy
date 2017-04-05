@@ -2,6 +2,7 @@
 
 set -e
 
+. kubectl-install
 . ci-setup-k8s
 
 TMP_DIR="./.kube-deploy"
@@ -10,13 +11,10 @@ mkdir -p $TMP_DIR
 for f in $1
 do
   TMP_FILE="./.kube-deploy/$(basename $f)"
-  echo $TMP_FILE
   cat $f \
     | envsubst \
     > $TMP_FILE
 
-  echo "Deploy: $f"
-  echo "Generated file: $TMP_FILE"
-
+  echo "Deploy: $TMP_FILE"
   kubectl apply -f $TMP_FILE
 done
