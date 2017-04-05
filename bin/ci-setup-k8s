@@ -2,15 +2,18 @@
 
 set -e
 
+. kubectl-install
+
 # Env variables:
 # - KUBE_SERVER
 # - KUBE_USERNAME
 # - KUBE_PASSWORD
-KUBE_NAMESPACE=$SCOPE_NAME
-KUBE_IMAGE=$RELEASE_IMAGE_TAG_PATH
+# - KUBE_NAMESPACE
+# - KUBE_IMAGE
 
 # Login to cluster
 if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD" != "" ]; then
+  echo "Authenticate to $KUBE_SERVER"
   kubectl config set-cluster cluster \
     --server $KUBE_SERVER
   kubectl config set-credentials user \

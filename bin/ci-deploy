@@ -2,7 +2,6 @@
 
 set -e
 
-. kubectl-install
 . ci-setup-k8s
 
 TMP_DIR="./.kube-deploy"
