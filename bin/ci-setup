@@ -35,6 +35,11 @@ export RELEASE_IMAGE_LATEST_PATH=$IMAGE_PATH:latest
 # Tagged release, aka v1.2.3
 export RELEASE_IMAGE_TAG_PATH=$IMAGE_PATH:$RELASE_IMAGE_TAG
 
-export KUBE_NAMESPACE=$SCOPE_NAME
+namespace=$SCOPE_NAME
+if [ "$KUBE_NAMESPACE_ENV" != "" ]; then
+  namespace="$namespace-$KUBE_NAMESPACE_ENV"
+fi
+
+export KUBE_NAMESPACE=$namespace
 export KUBE_IMAGE=$RELEASE_IMAGE_TAG_PATH
 export KUBE_DEPLOY_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
