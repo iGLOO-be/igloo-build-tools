@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 REPOSITORY="git://github.com/igloo-be/igloo-build-tools.git"
-VERSION="master"
+VERSION="v0.0.7"
 TMPDIR="/tmp/igloo-build-tools"
 INSTALL_DIR="/usr/local/bin"
 
