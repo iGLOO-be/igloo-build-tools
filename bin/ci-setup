@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+# # Config
+# IMAGE_SUFFIX (default: "") : Append a string at the end of the image name
+# KUBE_NAMESPACE_ENV (default: "") : Append a string a the end of the k8s namespace
+
 set -e
 
 . docker-login
@@ -26,7 +30,7 @@ export RELASE_IMAGE_TAG=$tag
 
 # Base image like 123.dkr.ecr.eu-west-1.amazonaws.com/igloo/igloo-devops-gitlab-ci-kubernetes
 # From docker-login
-IMAGE_PATH=$DOCKER_IMAGE_PREFIX
+IMAGE_PATH=$DOCKER_IMAGE_PREFIX$IMAGE_SUFFIX
 
 # Test image like $IMAGE_PATH:[pipeline-id]
 export TEST_IMAGE_PATH=$IMAGE_PATH:$IMAGE_TAG
