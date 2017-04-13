@@ -2,6 +2,7 @@
 
 # # Config
 # IMAGE_SUFFIX (default: "") : Append a string at the end of the image name
+# IMAGE_TAG_PREFIX (default: "")
 # KUBE_NAMESPACE_ENV (default: "") : Append a string a the end of the k8s namespace
 
 set -e
@@ -26,6 +27,11 @@ else
   echo "Are you running on GitLab CI ?"
   exit 1
 fi
+
+if [ "$IMAGE_TAG_PREFIX" != "" ]; then
+  tag="$IMAGE_TAG_PREFIX-$tag"
+fi
+
 export RELASE_IMAGE_TAG=$tag
 
 # Base image like 123.dkr.ecr.eu-west-1.amazonaws.com/igloo/igloo-devops-gitlab-ci-kubernetes
