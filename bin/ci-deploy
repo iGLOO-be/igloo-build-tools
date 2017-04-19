@@ -4,8 +4,23 @@ set -e
 
 . ci-setup-k8s
 
+dir=`pwd`/`dirname $1`
+
+rootDeployDir=$dir
+while [ "$rootDeployDir" != "/" ] ; do
+  if [ `find "$rootDeployDir" -maxdepth 1 -name default-env` ]; then
+    break
+  fi
+  rootDeployDir=`dirname "$rootDeployDir"`
+done
+
 TMP_DIR="./.kube-deploy"
 mkdir -p $TMP_DIR
+
+if [ -f $rootDeployDir/default-env ]; then
+  export $(cat $rootDeployDir/default-env | xargs)
+  echo "Loaded default-env: $rootDeployDir/default-env"
+fi
 
 for f in $1
 do
