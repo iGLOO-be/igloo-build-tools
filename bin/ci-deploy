@@ -31,4 +31,5 @@ do
 
   echo "Deploy: $TMP_FILE"
   kubectl apply -f $TMP_FILE
+  kubectl describe -f ~/Downloads/deploy.yaml
 done
