@@ -12,14 +12,11 @@ stages:
   - deploy
 
 .docker-env: &docker-env
-  image: docker:1.13.1
+  image: igloo/build-tools:0.0.14
   services:
     - docker:1.13.1-dind
   variables:
     DOCKER_DRIVER: overlay2
-  before_script:
-    - apk add --no-cache curl
-    - curl https://raw.githubusercontent.com/iGLOO-be/igloo-build-tools/v0.0.13/install.sh | sh
 
 release:
   <<: *docker-env

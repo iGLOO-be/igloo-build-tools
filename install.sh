@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 REPOSITORY="git://github.com/igloo-be/igloo-build-tools.git"
-VERSION="v0.0.13"
+VERSION="v0.0.14"
 TMPDIR="/tmp/igloo-build-tools"
 INSTALL_DIR="/usr/local/bin"
 
@@ -19,7 +19,7 @@ apt_install_deps () {
 
 apk_install_deps () {
   apk add --no-cache curl ca-certificates git python py-pip gettext
-  pip install awscli
+  pip install awsclir
 }
 
 install () {
