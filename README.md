@@ -12,7 +12,7 @@ stages:
   - deploy
 
 .docker-env: &docker-env
-  image: igloo/build-tools:v0.0.15
+  image: igloo/build-tools:v0.1.0
   services:
     - docker:1.13.1-dind
   variables:
