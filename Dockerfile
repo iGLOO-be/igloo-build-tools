@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM docker:1.13.1
 
 RUN apk add --no-cache \
       curl \
