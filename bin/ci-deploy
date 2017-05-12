@@ -4,6 +4,10 @@ set -e
 
 . ci-setup-k8s
 
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
 dir=`dirname "$(pwd)/$1"`
 
 if [ -d "$dir" ]; then
@@ -29,7 +33,9 @@ do
     | envsubst \
     > $TMP_FILE
 
-  echo "Deploy: $TMP_FILE"
+  echo "${green}Deploy: $TMP_FILE${reset}"
   kubectl apply --namespace $KUBE_NAMESPACE -f $TMP_FILE
   kubectl describe --namespace $KUBE_NAMESPACE -f $TMP_FILE
+
+  echo ""
 done
