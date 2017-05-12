@@ -30,6 +30,6 @@ do
     > $TMP_FILE
 
   echo "Deploy: $TMP_FILE"
-  kubectl apply -f $TMP_FILE
-  kubectl describe -f $TMP_FILE
+  kubectl apply --namespace $KUBE_NAMESPACE -f $TMP_FILE
+  kubectl describe --namespace $KUBE_NAMESPACE -f $TMP_FILE
 done
