@@ -17,6 +17,8 @@ stages:
     - docker:1.13.1-dind
   variables:
     DOCKER_DRIVER: overlay2
+  tags:
+    - docker-dind
 
 release:
   <<: *docker-env

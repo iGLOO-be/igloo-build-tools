@@ -4,6 +4,8 @@ set -e
 
 . ci-setup-k8s
 
+export TERM=${TERM:-xterm}
+
 red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
