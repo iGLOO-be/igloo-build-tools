@@ -15,21 +15,23 @@ set -e
 # Login to cluster
 if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_TOKEN" != "" ]; then
   echo "Authenticate to $KUBE_SERVER using token"
-  kubectl config set-cluster cluster \
-    --server $KUBE_SERVER
-  kubectl config set-credentials user \
-    --token=$KUBE_TOKEN
+  kubectl config set-cluster cluster --server $KUBE_SERVER
+  kubectl config set-credentials user --token=$KUBE_TOKEN
   kubectl config set-context default-system --cluster=cluster --user=user
   kubectl config use-context default-system
 fi
 
 if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD" != "" ]; then
   echo "Authenticate to $KUBE_SERVER"
-  kubectl config set-cluster cluster \
-    --server $KUBE_SERVER
-  kubectl config set-credentials user \
-    --username=$KUBE_USERNAME \
-    --password=$KUBE_PASSWORD
+  kubectl config set-cluster cluster --server $KUBE_SERVER
+
+  if [ "$KUBE_AUTH_BASIC" = "true" ]; then
+    kubectl config set-credentials user --username=$KUBE_USERNAME --password=$KUBE_PASSWORD
+  else
+    token=$(echo -n "Basic `echo -n $KUBE_USERNAME:$KUBE_PASSWORD | openssl base64 | tr -d '\n'`" | openssl base64 | tr -d '\n')
+    kubectl config set-credentials user --token=$token
+  fi
+
   kubectl config set-context default-system --cluster=cluster --user=user
   kubectl config use-context default-system
 fi
