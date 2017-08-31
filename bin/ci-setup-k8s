@@ -2,8 +2,6 @@
 
 set -e
 
-. kubectl-install
-
 # Env variables:
 # - KUBE_SERVER
 # - KUBE_USERNAME
