@@ -47,9 +47,11 @@ elif [ "$AWS_ECR_ACCOUNT_ID" != "" ]; then
   # Process to login
   eval $(aws ecr get-login)
 
-  # Create repository if not exists
-  aws ecr describe-repositories | grep -q $REPOSITORY || \
-    aws ecr create-repository --repository-name $REPOSITORY
+  if [ "$AWS_CREATE_REPOSITORY" != "false" ]; then
+    # Create repository if not exists
+    aws ecr describe-repositories | grep -q $REPOSITORY || \
+      aws ecr create-repository --repository-name $REPOSITORY
+  fi
 
   # Export config
   export DOCKER_IMAGE_PREFIX="$AWS_ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$REPOSITORY"
