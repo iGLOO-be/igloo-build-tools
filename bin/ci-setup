@@ -36,7 +36,11 @@ export RELASE_IMAGE_TAG=$tag
 
 # Base image like 123.dkr.ecr.eu-west-1.amazonaws.com/igloo/igloo-devops-gitlab-ci-kubernetes
 # From docker-login
-IMAGE_PATH=$DOCKER_IMAGE_PREFIX$IMAGE_SUFFIX
+if [ "$IMAGE_PATH" == "" ]; then
+  IMAGE_PATH="$DOCKER_IMAGE_PREFIX$IMAGE_SUFFIX"
+fi
+
+export IMAGE_PATH=$IMAGE_PATH
 
 # Test image like $IMAGE_PATH:[pipeline-id]
 export TEST_IMAGE_PATH=$IMAGE_PATH:$IMAGE_TAG
