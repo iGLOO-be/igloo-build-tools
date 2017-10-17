@@ -16,7 +16,7 @@ if [ -d "$dir" ]; then
   rootDeployDir=$dir
   while [ "$rootDeployDir" != "/" ] ; do
     if [ `find "$rootDeployDir" -maxdepth 1 -name default-env` ]; then
-      eval $(cat $rootDeployDir/default-env | sed 's/\(.*\)=\(.*\)/export \1=${\1:-\2}/g' | xargs)
+      eval $(cat $rootDeployDir/default-env | sed 's/\([^=]*\)=\(.*\)/export \1=${\1:-\2}/g' | xargs)
       echo "Loaded default-env: $rootDeployDir/default-env"
 
       break
