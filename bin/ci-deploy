@@ -25,9 +25,11 @@ mkdir -p $TMP_DIR
 for f in $1
 do
   TMP_FILE="./.kube-deploy/$(basename $f)"
-  cat $f \
-    | envsubst \
-    > $TMP_FILE
+  if [ "$NO_K8S_TEMPLATE" != "" ]; then
+    cat $f > $TMP_FILE
+  else
+    cat $f | envsubst > $TMP_FILE
+  fi
 
   echo "Deploy: $TMP_FILE"
   kubectl apply --namespace $KUBE_NAMESPACE -f $TMP_FILE
