@@ -1,8 +1,14 @@
 
 # igloo-build-tools
 
+## Env variables
 
-##### `gitlab-ci.yml` sample
+- `NO_DOCKER_LOGIN`: `yes`
+- `NO_K8S_TEMPLATE`: `yes`
+
+## Sample
+
+##### `gitlab-ci.yml`
 
 ```yaml
 image: igloo/test-runner

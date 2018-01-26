@@ -7,7 +7,9 @@ die () {
   exit 1
 }
 
-if [ "$GCR_PROJECT" != "" ]; then
+if [ "$NO_DOCKER_LOGIN" == "yes" ]; then
+  echo "Skip docker login !"
+elif [ "$GCR_PROJECT" != "" ]; then
   ### ---------------------------------------------------------------------- ###
   ### Google Container Registry
   ### ---------------------------------------------------------------------- ###
@@ -58,11 +60,7 @@ elif [ "$AWS_ECR_ACCOUNT_ID" != "" ]; then
 
   echo "Successfully login on AWS docker registry"
 else
-  if [ "$NO_DOCKER_LOGIN" != "" ]; then
-    echo "Could not identify docker registry !"
-  else
-    die "Could not identify docker registry !"
-  fi
+  die "Could not identify docker registry !"
 fi
 
 echo "Using DOCKER_IMAGE_PREFIX=$DOCKER_IMAGE_PREFIX"
