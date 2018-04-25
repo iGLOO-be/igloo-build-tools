@@ -17,7 +17,7 @@ set -e
 # - GCLOUD_CLUSTER_ZONE
 
 # Login with gcloud
-if [ "$GCLOUD_SERVICE_ACCOUNT_NAME" != "" ] && [ "$GCLOUD_SERVICE_ACCOUNT_KEY" != "" ] && [ "$GCLOUD_CLUSTER_NAME" != "" ] && [ "$GCLOUD_CLUSTER_ZONE" != "" ] && [ "$GCLOUD_PROJECT" != "" ]; then
+if [ "$GCLOUD_SERVICE_ACCOUNT_KEY" != "" ] && [ "$GCLOUD_CLUSTER_NAME" != "" ] && [ "$GCLOUD_CLUSTER_ZONE" != "" ] && [ "$GCLOUD_PROJECT" != "" ]; then
   echo "Authenticate to $GCLOUD_CLUSTER_NAME with gcloud on zone $GCLOUD_CLUSTER_ZONE"
   gcloudCredentialsFile=/tmp/google-cloud-credentials.json
   echo $GCLOUD_SERVICE_ACCOUNT_KEY > $gcloudCredentialsFile
