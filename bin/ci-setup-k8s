@@ -10,16 +10,36 @@ set -e
 # - KUBE_NAMESPACE
 # - KUBE_IMAGE
 
-# Login to cluster
-if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_TOKEN" != "" ]; then
+# For gcloud:
+# - GCLOUD_SERVICE_ACCOUNT_NAME [optional]
+# - GCLOUD_SERVICE_ACCOUNT_KEY
+# - GCLOUD_CLUSTER_NAME
+# - GCLOUD_CLUSTER_ZONE
+
+# Login with gcloud
+if [ "$GCLOUD_SERVICE_ACCOUNT_NAME" != "" ] && [ "$GCLOUD_SERVICE_ACCOUNT_KEY" != "" ] && [ "$GCLOUD_CLUSTER_NAME" != "" ] && [ "$GCLOUD_CLUSTER_ZONE" != "" ] && [ "$GCLOUD_PROJECT" != "" ]; then
+  echo "Authenticate to $GCLOUD_CLUSTER_NAME with gcloud on zone $GCLOUD_CLUSTER_ZONE"
+  gcloudCredentialsFile=/tmp/google-cloud-credentials.json
+  echo $GCLOUD_SERVICE_ACCOUNT_KEY > $gcloudCredentialsFile
+
+  if [ "$GCLOUD_SERVICE_ACCOUNT_NAME" == "" ]; then
+    GCLOUD_SERVICE_ACCOUNT_NAME=$(cat $gcloudCredentialsFile | jq -r '.client_email')
+  fi
+
+  gcloud config set project $GCLOUD_PROJECT
+  gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_NAME --key-file=$gcloudCredentialsFile
+  gcloud container clusters get-credentials $GCLOUD_CLUSTER_NAME --zone $GCLOUD_CLUSTER_ZONE
+
+# Login by token
+elif [ "$KUBE_SERVER" != "" ] && [ "$KUBE_TOKEN" != "" ]; then
   echo "Authenticate to $KUBE_SERVER using token"
   kubectl config set-cluster cluster --server $KUBE_SERVER
   kubectl config set-credentials user --token=$KUBE_TOKEN
   kubectl config set-context default-system --cluster=cluster --user=user
   kubectl config use-context default-system
-fi
 
-if [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD" != "" ]; then
+# Login by username/password
+elif [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD" != "" ]; then
   echo "Authenticate to $KUBE_SERVER"
   kubectl config set-cluster cluster --server $KUBE_SERVER
 
