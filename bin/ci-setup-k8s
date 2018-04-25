@@ -12,7 +12,7 @@ set -e
 
 # For gcloud:
 # - GCLOUD_SERVICE_ACCOUNT_NAME [optional]
-# - GCLOUD_SERVICE_ACCOUNT_KEY
+# - GCLOUD_SERVICE_ACCOUNT_KEY [base64]
 # - GCLOUD_CLUSTER_NAME
 # - GCLOUD_CLUSTER_ZONE
 
@@ -20,7 +20,7 @@ set -e
 if [ "$GCLOUD_SERVICE_ACCOUNT_KEY" != "" ] && [ "$GCLOUD_CLUSTER_NAME" != "" ] && [ "$GCLOUD_CLUSTER_ZONE" != "" ] && [ "$GCLOUD_PROJECT" != "" ]; then
   echo "Authenticate to $GCLOUD_CLUSTER_NAME with gcloud on zone $GCLOUD_CLUSTER_ZONE"
   gcloudCredentialsFile=/tmp/google-cloud-credentials.json
-  echo $GCLOUD_SERVICE_ACCOUNT_KEY > $gcloudCredentialsFile
+  echo $GCLOUD_SERVICE_ACCOUNT_KEY | base64 -d > $gcloudCredentialsFile
 
   if [ "$GCLOUD_SERVICE_ACCOUNT_NAME" == "" ]; then
     GCLOUD_SERVICE_ACCOUNT_NAME=$(cat $gcloudCredentialsFile | jq -r '.client_email')
