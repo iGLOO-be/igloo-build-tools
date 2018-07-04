@@ -1,7 +1,8 @@
 FROM docker:1.13.1
 
 ENV KUBECTL_VERSION=v1.7.4
-ENV CLOUD_SDK_VERSION 198.0.0
+ENV CLOUD_SDK_VERSION=198.0.0
+ENV HELM_VERSION="v2.9.1"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -19,14 +20,14 @@ RUN apk add --no-cache \
       openssh-client \
       jq \
     && \
-    echo "\nInstall awscli..." && \
+    echo "Install awscli..." && \
     pip install awscli && \
-    echo "\nInstall kubectl..." && \
+    echo "Install kubectl..." && \
     mkdir -p /usr/local/bin && \
     curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl \
       -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
-    echo "\nInstall gcloud..." && \
+    echo "Install gcloud..." && \
     curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     mkdir -p /google-cloud-sdk && \
     tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
@@ -35,6 +36,9 @@ RUN apk add --no-cache \
     gcloud config set core/disable_usage_reporting true && \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image && \
-    gcloud --version
+    gcloud --version && \
+    echo "Install helm..." && \
+    wget -q http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+    && chmod +x /usr/local/bin/helm
 
 COPY bin/* /usr/local/bin/
