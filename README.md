@@ -43,9 +43,9 @@ stages:
   - deploy
 
 .docker-env: &docker-env
-  image: igloo/build-tools:v0.1.6
+  image: igloo/build-tools:v0.2.0
   services:
-    - docker:1.13.1-dind
+    - docker:18.09.0-dind
   variables:
     DOCKER_DRIVER: overlay2
   tags:
@@ -74,4 +74,21 @@ deploy-master:
   script:
     - . ci-setup
     - ci-deploy "./deploy/*.yml"
+```
+
+With `helm`
+```yaml
+.deploy: &deploy
+  <<: *docker-env
+  stage: deploy
+  artifacts:
+    paths:
+    - .kube-deploy
+  script:
+    - . ci-setup
+    - . ci-setup-k8s
+    - helm upgrade --install
+        $KUBE_NAMESPACE
+        --namespace $KUBE_NAMESPACE
+        ./deploy/chart
 ```
