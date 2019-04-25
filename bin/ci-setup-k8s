@@ -52,6 +52,36 @@ elif [ "$KUBE_SERVER" != "" ] && [ "$KUBE_USERNAME" != "" ] && [ "$KUBE_PASSWORD
 
   kubectl config set-context default-system --cluster=cluster --user=user
   kubectl config use-context default-system
+
+# Login by certificate
+elif [ "$KUBE_SERVER" != "" ] && ([ "$KUBE_CLIENT_CERTIFICATE_DATA" != "" ] || [ "$KUBE_CLIENT_KEY_DATA" != "" ]); then
+  echo "Authenticate to $KUBE_SERVER using certifcate and/or key"
+  kubectl config set-cluster cluster --server $KUBE_SERVER --insecure-skip-tls-verify=true
+
+  if [ "$KUBE_CLIENT_CERTIFICATE_DATA" != "" ]; then
+    echo "Set certifcate..."
+    if [ "$KUBE_CLIENT_CERTIFICATE_DATA_ENCODED" = "true" ]; then
+      echo $KUBE_CLIENT_CERTIFICATE_DATA | base64 -d > /tmp/kube-client-crt
+    else
+      echo $KUBE_CLIENT_CERTIFICATE_DATA > /tmp/kube-client-crt
+    fi
+    kubectl config set-credentials user --client-certificate=/tmp/kube-client-crt --embed-certs=true
+    rm /tmp/kube-client-crt
+  fi
+
+  if [ "$KUBE_CLIENT_KEY_DATA" != "" ]; then
+    echo "Set key..."
+    if [ "$KUBE_CLIENT_KEY_DATA_ENCODED" = "true" ]; then
+      echo $KUBE_CLIENT_KEY_DATA | base64 -d > /tmp/kube-client-key
+    else
+      echo $KUBE_CLIENT_KEY_DATA > /tmp/kube-client-key
+    fi
+    kubectl config set-credentials user --client-key=/tmp/kube-client-key --embed-certs=true
+    rm /tmp/kube-client-key
+  fi
+
+  kubectl config set-context default-system --cluster=cluster --user=user
+  kubectl config use-context default-system
 fi
 
 # Create namespace and set in context
