@@ -1,8 +1,11 @@
-FROM docker:18.09.0
+FROM docker:19.03.4
 
-ENV KUBECTL_VERSION=v1.12.3
-ENV CLOUD_SDK_VERSION=226.0.0
-ENV HELM_VERSION="v2.11.0"
+# curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt
+ENV KUBECTL_VERSION=v1.16.2
+# https://cloud.google.com/sdk/docs/downloads-versioned-archives?hl=fr
+ENV CLOUD_SDK_VERSION=245.0.0
+# https://github.com/helm/helm/releases
+ENV HELM_VERSION="v2.15.2"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
