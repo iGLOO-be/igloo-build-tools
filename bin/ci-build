@@ -2,12 +2,36 @@
 
 set -e
 
-DOCKER_BUILD_ARGS="${@:2}"
+DOCKER_BUILD_OPTIONS=()
+DOCKER_BUILD_ARGS=()
+while [[ $# -gt 0 ]]; do
+key="$1"
+case $key in
+  -f|--file|--add-host) # docker build options
+    DOCKER_BUILD_OPTIONS+=("$1 $2")
+    shift # past argument
+    shift # past value
+    ;;
+  --build-arg)
+    DOCKER_BUILD_ARGS+=("$2")
+    shift
+    shift
+    ;;
+  *) # unknown option
+    DOCKER_BUILD_ARGS+=("$1")
+    shift # past argument
+    ;;
+esac
+done
+set -- "${DOCKER_BUILD_ARGS[@]}" # restore parameters
+
+DOCKER_BUILD_OPTIONS_STR=`printf '%s ' "${DOCKER_BUILD_OPTIONS[@]}"`
+DOCKER_BUILD_ARGS_STR=`printf '%s ' "${DOCKER_BUILD_ARGS[@]}"`
 
 docker build \
   --cache-from $RELEASE_IMAGE_LATEST_PATH \
-  --build-arg GIT_SHA=$CI_BUILD_REF $DOCKER_BUILD_ARGS \
-  -t $RELEASE_IMAGE_TAG_PATH .
+  --build-arg GIT_SHA=$CI_BUILD_REF $DOCKER_BUILD_ARGS_STR \
+  -t $RELEASE_IMAGE_TAG_PATH $DOCKER_BUILD_OPTIONS_STR .
 docker tag \
   $RELEASE_IMAGE_TAG_PATH \
   $RELEASE_IMAGE_LATEST_PATH
