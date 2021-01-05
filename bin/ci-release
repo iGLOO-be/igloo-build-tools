@@ -5,4 +5,4 @@ set -e
 docker push $RELEASE_IMAGE_TAG_PATH
 docker push $RELEASE_IMAGE_LATEST_PATH
 
-docker rmi $(docker images -q)
+docker rmi $(docker images -q) || echo "Error during: docker rmi"
