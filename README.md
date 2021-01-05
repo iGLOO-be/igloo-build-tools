@@ -47,7 +47,7 @@ stages:
   - deploy
 
 .docker-env: &docker-env
-  image: igloo/build-tools:v0.2.3
+  image: igloo/build-tools:v0.2.4
   services:
     - docker:18.09.0-dind
   variables:
