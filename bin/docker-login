@@ -47,7 +47,8 @@ elif [ "$AWS_ECR_ACCOUNT_ID" != "" ]; then
   REPOSITORY=$( echo $CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME | tr '[:upper:]' '[:lower:]' )
 
   # Process to login
-  eval $(aws ecr get-login)
+  aws ecr get-login-password --region $AWS_DEFAULT_REGION | \
+    docker login --username AWS --password-stdin $AWS_ECR_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   if [ "$AWS_CREATE_REPOSITORY" != "false" ]; then
     # Create repository if not exists
