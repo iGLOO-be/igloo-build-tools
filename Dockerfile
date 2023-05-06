@@ -3,6 +3,7 @@ FROM docker:23.0.5-alpine3.17
 ENV KUBECTL_VERSION=v1.25.9
 ENV CLOUD_SDK_VERSION=429.0.0
 ENV HELM_VERSION="v3.11.3"
+ENV HELM2_VERSION="v2.16.7"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -39,6 +40,8 @@ RUN apk add --update --no-cache \
     gcloud --version && \
     echo "Install helm..." && \
     wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
-    && chmod +x /usr/local/bin/helm
+    && chmod +x /usr/local/bin/helm && \
+    wget -q https://get.helm.sh/helm-${HELM2_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm2 \
+    && chmod +x /usr/local/bin/helm2
 
 COPY bin/* /usr/local/bin/
