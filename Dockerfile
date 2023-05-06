@@ -1,17 +1,17 @@
-FROM docker:20.10.18
+FROM docker:23.0.5-alpine3.17
 
-ENV KUBECTL_VERSION=v1.12.3
-ENV CLOUD_SDK_VERSION=226.0.0
-ENV HELM_VERSION="v2.11.0"
+ENV KUBECTL_VERSION=v1.25.9
+ENV CLOUD_SDK_VERSION=429.0.0
+ENV HELM_VERSION="v3.11.3"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
-RUN apk add --no-cache \
+RUN apk add --update --no-cache \
       bash \
       curl \
       ca-certificates \
       git \
-      python \
+      python3 \
       py-crcmod \
       py-pip \
       gettext \
@@ -38,7 +38,7 @@ RUN apk add --no-cache \
     gcloud config set metrics/environment github_docker_image && \
     gcloud --version && \
     echo "Install helm..." && \
-    wget -q http://storage.googleapis.com/kubernetes-helm/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
+    wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && chmod +x /usr/local/bin/helm
 
 COPY bin/* /usr/local/bin/
