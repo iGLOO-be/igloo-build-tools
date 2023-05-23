@@ -38,6 +38,7 @@ RUN apk add --update --no-cache \
     gcloud config set component_manager/disable_update_check true && \
     gcloud config set metrics/environment github_docker_image && \
     gcloud --version && \
+    gcloud components install gke-gcloud-auth-plugin && \
     echo "Install helm..." && \
     wget -q https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm \
     && chmod +x /usr/local/bin/helm && \
