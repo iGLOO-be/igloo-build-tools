@@ -1,15 +1,15 @@
-
 # igloo-build-tools
 
 ## Input env variables
 
-- `NO_DOCKER_LOGIN`: `yes`
-- `NO_K8S_TEMPLATE`: `yes`
+- `NO_DOCKER_LOGIN`: Set to `yes` to skip docker login
+- `NO_K8S_TEMPLATE`: Set to `yes` to not replace variables
 
 ### Image config
 
 - `IMAGE_SUFFIX` (default: "") : Append a string at the end of the image name
 - `IMAGE_TAG_PREFIX` (default: "")
+- `KUBE_NAMESPACE`: (optional) Force a namespace
 - `KUBE_NAMESPACE_ENV` (default: "") : Append a string a the end of the k8s namespace
 
 ### Kubernetes authentication
@@ -24,6 +24,7 @@
 - `KUBE_CLIENT_KEY_DATA_ENCODED`: Set true if `KUBE_CLIENT_KEY_DATA` is already encoded
 
 ### For Google Cloud:
+
 - `GCLOUD_SERVICE_ACCOUNT_NAME` [optional]
 - `GCLOUD_SERVICE_ACCOUNT_KEY`
 - `GCLOUD_CLUSTER_NAME`
@@ -40,50 +41,39 @@
 ##### `gitlab-ci.yml`
 
 ```yaml
-image: igloo/test-runner
-
-stages:
-  - release
-  - deploy
-
-.docker-env: &docker-env
-  image: igloo/build-tools:v0.2.5
+.docker-env:
+  image: igloo/build-tools:v0.3.1
   services:
-    - docker:18.09.0-dind
+    - docker:23.0.5-dind
   variables:
     DOCKER_DRIVER: overlay2
   tags:
     - docker-dind
 
 release:
-  <<: *docker-env
+  extends: .docker-env
   stage: release
-  only:
-    - master
-    - next
   script:
     - . ci-setup
     - ci-build
     - ci-release
 
 deploy-master:
-  <<: *docker-env
+  extends: .docker-env
   stage: deploy
-  environment: production
-  only:
-    - master
   artifacts:
     paths:
-    - .kube-deploy
+      - .kube-deploy
   script:
     - . ci-setup
     - ci-deploy "./deploy/*.yml"
 ```
 
 With `helm`
+
 ```yaml
-.deploy: &deploy
-  <<: *docker-env
+.deploy:
+  extends: .docker-env
   stage: deploy
   artifacts:
     paths:
