@@ -1,9 +1,9 @@
-FROM docker:23.0.5-alpine3.17
+FROM docker:24.0.6-alpine3.18
 
-ENV KUBECTL_VERSION=v1.25.9
-ENV CLOUD_SDK_VERSION=429.0.0
-ENV HELM_VERSION="v3.11.3"
-ENV HELM2_VERSION="v2.16.7"
+ENV KUBECTL_VERSION=v1.28.2
+ENV CLOUD_SDK_VERSION=450.0.0
+ENV HELM_VERSION="v3.13.1"
+ENV HELM2_VERSION="v2.17.0"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -25,7 +25,7 @@ RUN apk add --update --no-cache \
     pip install awscli && \
     echo "Install kubectl..." && \
     mkdir -p /usr/local/bin && \
-    curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl \
+    curl -L https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl \
       -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
     echo "Install gcloud..." && \

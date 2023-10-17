@@ -42,9 +42,9 @@
 
 ```yaml
 .docker-env:
-  image: igloo/build-tools:v0.3.1
+  image: igloo/build-tools:v0.3.2
   services:
-    - docker:23.0.5-dind
+    - docker:24.0.6-dind
   variables:
     DOCKER_DRIVER: overlay2
   tags:
