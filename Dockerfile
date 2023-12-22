@@ -1,8 +1,8 @@
-FROM docker:24.0.6-alpine3.18
+FROM docker:24.0.7-alpine3.19
 
-ENV KUBECTL_VERSION=v1.28.2
-ENV CLOUD_SDK_VERSION=450.0.0
-ENV HELM_VERSION="v3.13.1"
+ENV KUBECTL_VERSION=v1.29.0
+ENV CLOUD_SDK_VERSION=458.0.0
+ENV HELM_VERSION="v3.13.3"
 ENV HELM2_VERSION="v2.17.0"
 
 ENV PATH /google-cloud-sdk/bin:$PATH
@@ -22,7 +22,7 @@ RUN apk add --update --no-cache \
       jq \
     && \
     echo "Install awscli..." && \
-    pip install awscli && \
+    pip install awscli --break-system-packages && \
     echo "Install kubectl..." && \
     mkdir -p /usr/local/bin && \
     curl -L https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl \
