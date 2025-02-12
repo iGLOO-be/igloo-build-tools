@@ -42,11 +42,13 @@
 
 ```yaml
 .docker-env:
-  image: igloo/build-tools:v0.3.3
+  image: igloo/build-tools:v0.3.4
   services:
-    - docker:24.0.7-dind-alpine3.19
+    - name: docker:27.5.1-dind-alpine3.21
+      command: ["--tls=false"]
   variables:
     DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
   tags:
     - docker-dind
 

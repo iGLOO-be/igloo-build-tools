@@ -1,11 +1,12 @@
-FROM docker:24.0.7-alpine3.19
+FROM docker:27.5.1-alpine3.21
 
-ENV KUBECTL_VERSION=v1.29.0
-ENV CLOUD_SDK_VERSION=458.0.0
-ENV HELM_VERSION="v3.13.3"
+# https://cdn.dl.k8s.io/release/stable.txt
+ENV KUBECTL_VERSION=v1.32.1
+ENV CLOUD_SDK_VERSION=510.0.0
+ENV HELM_VERSION="v3.17.0"
 ENV HELM2_VERSION="v2.17.0"
 
-ENV PATH /google-cloud-sdk/bin:$PATH
+ENV PATH=/google-cloud-sdk/bin:$PATH
 
 RUN apk add --update --no-cache \
       bash \
@@ -29,7 +30,7 @@ RUN apk add --update --no-cache \
       -o /usr/local/bin/kubectl && \
     chmod +x /usr/local/bin/kubectl && \
     echo "Install gcloud..." && \
-    curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
+    curl -O https://storage.googleapis.com/cloud-sdk-release/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     mkdir -p /google-cloud-sdk && \
     tar xzf google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
     rm google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
